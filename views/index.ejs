@@ -3,31 +3,34 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles.css">
         <title><%= title %></title>
     </head>
     <body>
         <%- include("partials/header.ejs") %>
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% rows.forEach(row => { %>
+        <div class="main-container">
+            <table>
+                <thead>
                     <tr>
-                        <td><%= row.id %></td>
-                        <td>><%= row.product_name %></td>
-                        <td>><%= row.category %></td>
-                        <td>><%= row.price %></td>
-                        <td>><%= row.quantity %></td>
+                        <th>Id</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
                     </tr>
-                <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% rows.forEach(row => { %>
+                        <tr>
+                            <td><%= row.id %></td>
+                            <td><%= row.product_name %></td>
+                            <td><%= row.category %></td>
+                            <td><%= row.price %> $</td>
+                            <td><%= row.quantity %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
