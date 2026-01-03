@@ -31,9 +31,21 @@ header > .nav-container {
     margin-right: 3rem;
 }
 
+table {
+    border-collapse: collapse;
+    border-spacing: 1rem;
+    border: 1px solid black;
+}
+
+tr, td, th {
+    text-align: center;
+    border: 1px solid black;
+    padding: 0.3rem 1rem;
+}
+
 header ul {
     display: flex;
-    gap: 1rem;
+
 }
 
 header li {
@@ -48,3 +60,14 @@ header li {
     justify-content: center;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 500ms;
+}
+
+a:hover {
+    background-color: #DFDFDF;
+}
