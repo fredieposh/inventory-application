@@ -9,28 +9,37 @@
     <body>
         <%- include("partials/header.ejs") %>
         <div class="main-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Product</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% rows.forEach(row => { %>
+            <h2> Inventory </h2>
+            <div class="table-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td><%= row.id %></td>
-                            <td><%= row.product_name %></td>
-                            <td><%= row.category %></td>
-                            <td><%= row.price %> $</td>
-                            <td><%= row.quantity %></td>
+                            <th>Id</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
                         </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <% rows.forEach(row => { %>
+                            <tr>
+                                <td><%= row.id %></td>
+                                <td><%= row.product_name %></td>
+                                <td><%= row.category %></td>
+                                <td><%= row.price %> $</td>
+                                <td><%= row.quantity %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="refs-container">
+            <a href="product/search">Search Product</a>
+            <a href="product/add">Add Product</a>
+            <a href="product/update">Update Product</a>
+            <a href="product/delete">Delete Product</a>
         </div>
     </body>
 </html>
