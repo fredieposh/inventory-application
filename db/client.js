@@ -15,9 +15,20 @@ const SQL = `
 
     INSERT INTO inventory (product_name ,category ,price ,quantity)
     VALUES
-        ('banana' ,'fruit' ,4.00 ,3),
+        ('banana' ,'fruits' ,4.00 ,3),
         ('milk' ,'dairy' ,2.55 ,10),
         ('beans' ,'lentils' ,3.15 ,3);
+    
+    CREATE TABLE IF NOT EXISTS categories (
+        id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+        category VARCHAR ( 255 )
+    );
+
+    INSERT INTO categories (category)
+    VALUES 
+        ('fruits'),
+        ('dairy'),
+        ('lentils');
 `;
 
 async function main() {
