@@ -9,6 +9,11 @@ exports.getAllInventory = async function () {
     return rows;
 };
 
+exports.getProductInfo = async function (productName) {
+    const { rows } = await pool.query('SELECT * FROM inventory WHERE product_name = ($1)', [productName]);
+    return rows;
+};
+
 exports.getAllCategories = async function() {
     const { rows } = await pool.query('SELECT * FROM categories');
     return rows;

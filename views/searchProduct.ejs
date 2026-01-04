@@ -9,19 +9,16 @@
     <body>
         <%- include("partials/header.ejs") %>
         <div class="main-container">
-            <h2> Inventory </h2>
-            <% if (locals.isResults) { %>
-                <% if (isFound) { %>
-                    <h3><%= productName %> Inventory Entries:</h3>
-                    <%- include ("partials/products.ejs") %>
-                <% } else { %>
-                    <div class="not-found">
-                        <h3>No Entries Found</h3>
-                    </div>
-                <% } %>
-             <% } else { %>
-                <%- include ("partials/products.ejs") %>
-             <% } %>
+            <h2> Search Product </h2>
+            <div class="form-container" style="flex: 6;">
+                <form action="/search" method="GET">
+                    <label for="productName">
+                        Product Name:
+                        <input type="text" name="productName" id="productName">
+                    </label>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
         </div>
         <div class="refs-container">
             <a href="/search">Search Product</a>

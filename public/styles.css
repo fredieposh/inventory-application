@@ -79,7 +79,12 @@ header li {
     flex: 1;
 }
 
+.main-container > .not-found {
+    flex: 6;
+}
+
 .main-container > .table-container {
+    margin-top: 1rem;
     flex: 6;
 }
 
@@ -99,5 +104,5 @@ a:hover {
     flex: 1;
     display: flex;
     align-items: center;
-    
+
 }
