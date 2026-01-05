@@ -25,6 +25,9 @@ header {
     display: flex;
     align-items:center;
 }
+button:hover {
+    cursor: pointer;
+}
 
 header > .nav-container {
     margin-left: auto;
@@ -127,7 +130,25 @@ a:hover {
     border-radius: 5px;
 }
 
-        <ul style="">
-            <% errors.forEach(function(error) { %>
-                <li style="list-style: none; back"><%= error.msg %></li>
-            <% }) %>
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.add-form label{
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.add-form .button-container {
+    margin-top: 0.7rem;
+    display:flex;
+    justify-content: center;
+}
+
+.add-form button{
+    /* width:fit-content; */
+    
+    padding: 0.1rem 1rem;
+}
