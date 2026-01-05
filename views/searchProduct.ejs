@@ -10,7 +10,8 @@
         <%- include("partials/header.ejs") %>
         <div class="main-container">
             <h2> Search Product </h2>
-            <div class="form-container" style="flex: 6;">
+            <div class="form-container" style="flex: 8;">
+                <%- include ("partials/errors.ejs") %>
                 <form action="/search" method="GET">
                     <label for="productName">
                         Product Name:

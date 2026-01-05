@@ -80,12 +80,12 @@ header li {
 }
 
 .main-container > .not-found {
-    flex: 6;
+    flex: 7;
 }
 
 .main-container > .table-container {
     margin-top: 1rem;
-    flex: 6;
+    flex: 7;
 }
 
 a {
@@ -104,5 +104,30 @@ a:hover {
     flex: 1;
     display: flex;
     align-items: center;
-
 }
+
+.errors-container {
+    margin-bottom: 1rem;
+}
+
+.errors-container ul{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+    gap: 0.5rem;
+}
+
+.errors-container li {
+    list-style: none;
+    width:fit-content;
+    background-color: lightpink;
+    color:rgb(130, 0, 0);
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+}
+
+        <ul style="">
+            <% errors.forEach(function(error) { %>
+                <li style="list-style: none; back"><%= error.msg %></li>
+            <% }) %>
