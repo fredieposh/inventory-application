@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles.css">
+        <title><%= title %></title>
+    </head>
+    <body>
+        <%- include("partials/header.ejs") %>
+        <div class="main-container">
+            <h2> Add Product </h2>
+            <div class="form-container" style="flex: 8;">
+                <%- include ("partials/errors.ejs") %>
+                <form action="/add" method="POST" class="add-form">
+                    <label for="productName">
+                        Product Name:
+                        <input type="text" name="productName" id="productName" required>
+                    </label>
+                    <label for="categoryName">
+                        Category Name:
+                        <input type="text" name="categoryName" id="categoryName" required>
+                    </label>
+                    <label for="price">
+                        Price:
+                        <input type="number" name="price" id="price" step="0.01" min="0.01" required>
+                    </label>                    
+                    <label for="quantity">
+                        Quantity:
+                        <input type="number" name="quantity" id="quantity" step="1" min="1" required>
+                    </label>                    
+                    <div class="button-container"><button type="submit" style="padding: 0.1rem 1rem;">Add</button></div>
+                </form>
+            </div>
+        </div>
+        <div class="refs-container">
+            <a href="/search">Search Product</a>
+            <a href="/add">Add Product</a>
+            <a href="/update">Update Product</a>
+            <a href="/delete">Delete Product</a>
+        </div>
+    </body>
+</html>
