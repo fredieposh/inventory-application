@@ -18,3 +18,8 @@ exports.getAllCategories = async function() {
     const { rows } = await pool.query('SELECT * FROM categories');
     return rows;
 };
+
+exports.isProductExists = async function(productName, categoryName) {
+    const { rows } = await pool.query('SELECT * FROM inventory WHERE product_name = ($1) AND category = ($2)',[productName, categoryName]);
+    return rows.length > 0;
+};
