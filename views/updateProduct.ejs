@@ -12,6 +12,9 @@
             <h2> Update Product </h2>
             <div class="form-container" style="flex: 8;">
                 <%- include ("partials/errors.ejs") %>
+                <% if (locals.isProducts) { %>
+                    <h2> No products to update</h2>
+                <%} else { %>
                 <form action="/update" method="POST" class="add-form">
                     <label for="productName">
                         Product Name:
@@ -30,8 +33,9 @@
                         Quantity:
                         <input type="number" name="quantity" id="quantity" step="1" min="1">
                     </label>                    
-                    <div class="button-container"><button type="submit" style="padding: 0.1rem 1rem;">Add</button></div>
+                    <div class="button-container"><button type="submit" style="padding: 0.1rem 1rem;">Update</button></div>
                 </form>
+                <% } %>
             </div>
         </div>
         <div class="refs-container">

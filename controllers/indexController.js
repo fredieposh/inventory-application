@@ -132,6 +132,16 @@ exports.postUpdateProducts = [
         const productNames = await dbHandler.getAllproductNames();
         let errors = validationResult(req);
 
+        if(Object.keys(productNames).length === 0) {
+            res.render('updateProduct',{
+                title: "Update Product",
+                errors: errors.array(),
+                productNames,
+                isProducts: false,
+            });
+            return;              
+        };
+
         if (!errors.isEmpty()){
             res.render('updateProduct',{
                 title: "Update Product",
