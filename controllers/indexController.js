@@ -28,9 +28,22 @@ const validateAddProduct = [
         .notEmpty().withMessage(`Quantity ${productSearchEmptyErr}`)
         .matches(/^\d+$/).withMessage(`Quantity ${productAddQuantityIntegerErr}`)
         .isNumeric({ min : 1}).withMessage(`Quantity ${productAddPriceZeroErr}`),
-]
+];
+
+const validateUpdateProduct = [
+    body("productName").trim()
+        .notEmpty().withMessage(`Product name ${productSearchEmptyErr}`)
+        .isLength({ min: 2, max: 50 }).withMessage(`Product name ${productSearchLengthErr}`),
+    body("price").optional({ values: 'falsy' }).trim()
+        .matches(/^\d+(\.\d{1,2})?$/).withMessage(`Price ${productAddPriceNumberErr}`)
+        .isFloat({ min: 0.01 }).withMessage(`Price ${productAddPriceZeroErr}`),
+    body("quantity").optional({ values: 'falsy' }).trim()
+        .matches(/^\d+$/).withMessage(`Quantity ${productAddQuantityIntegerErr}`)
+        .isNumeric({ min : 1}).withMessage(`Quantity ${productAddPriceZeroErr}`),
+];
 
 exports.getAllEntries = async function(req, res) {
+    // debugger;
     const rows = await dbHandler.getAllInventory()
     res.render('index', {
         title: 'Inventory',
@@ -90,7 +103,7 @@ exports.postAddProducts = [
         const { productName, categoryName, price, quantity } = matchedData(req);
 
         if(await dbHandler.isProductExists(productName, categoryName)) {
-            errors = [{msg: `Product with in category already exists`}];
+            errors = [{msg: `Product with this category already exists`}];
             res.render('addProduct', {
                 title: 'Add Product',
                 errors,
@@ -102,5 +115,62 @@ exports.postAddProducts = [
         res.redirect('/');
 
     }
-]
+];
 
+exports.getUpdateProducts = async function(req, res) {
+    const productNames = await dbHandler.getAllproductNames();
+    console.log(productNames);
+    res.render('updateProduct', {
+        title: "Update Product",
+        productNames,
+    });
+};
+
+exports.postUpdateProducts = [
+    validateUpdateProduct,
+    async function(req, res) {
+        const productNames = await dbHandler.getAllproductNames();
+        let errors = validationResult(req);
+
+        if (!errors.isEmpty()){
+            res.render('updateProduct',{
+                title: "Update Product",
+                errors: errors.array(),
+                productNames,
+            });
+            return;
+        };
+
+        const bodyParams = matchedData(req);
+        const newErrors = [];
+
+        if (!productNames.includes(bodyParams['productName'])) {
+            newErrors.push({msg: "Product name wasn't found in inventory"});
+        };
+
+        if (!(
+            bodyParams['price'] ||
+            bodyParams['quantity']
+        )) {
+            newErrors.push({msg: "Price or quantity must be filled in " 
+                + "order to update the product"});
+        };
+
+        if(newErrors.length > 0) {
+            res.render('updateProduct',{
+                title: "Update Product",
+                errors: newErrors,
+                productNames,
+            });
+            return;
+        }
+
+        await dbHandler.updateProduct({
+            product_name: bodyParams.productName,
+            price: bodyParams.price,
+            quantity: bodyParams.quantity,
+        });
+
+        res.redirect('/');
+    },
+];

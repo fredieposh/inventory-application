@@ -4,9 +4,36 @@ const pool = new Pool({
     connectionString: "postgresql://maorgo92@localhost:5432/inventory_app",
 });
 
+function getParamsForProductUpdateQuery(fieldsObj) {
+    const fieldsEntries = Object.entries(fieldsObj) 
+        .filter(entry => entry[0] !== 'product_name' && entry[1]) ;
+    const fields = fieldsEntries.map(entry => entry[0]);
+    const values = fieldsEntries.map(entry => entry[1]);
+    const stringForQuery = fields.map((field, index) => `${field} = ($${index + 1})`).join(', ');
+
+    return {stringForQuery, values};
+};
+
 exports.getAllInventory = async function () {
-    const { rows } = await pool.query('SELECT * FROM inventory;');
+    const { rows } = await pool.query('SELECT * FROM inventory ORDER BY id;');
     return rows;
+};
+
+exports.getAllproductNames = async function() {
+    const { rows } = await pool.query("SELECT product_name FROM inventory;");
+    return rows.map(row => {return row['product_name']});
+}
+
+exports.updateProduct = async function(fieldsObj) {
+    const {product_name} = fieldsObj;
+    const { stringForQuery, values } = getParamsForProductUpdateQuery(fieldsObj);
+    console.log(stringForQuery, '\n', values);
+
+    await pool.query(`
+        UPDATE inventory
+        SET ${stringForQuery}
+        WHERE product_name = '${product_name}';
+    `, values);
 };
 
 exports.getProductInfo = async function (productName) {
@@ -29,4 +56,4 @@ exports.isProductExists = async function(productName, categoryName) {
 exports.addProduct = async function(productName, categoryName, price, quantity) {
     await pool.query(`INSERT INTO inventory (product_name, category, price, quantity)
         VALUES ($1, $2, $3, $4);`,[productName, categoryName, price, quantity]);
-}
+};

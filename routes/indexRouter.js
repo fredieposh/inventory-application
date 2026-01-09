@@ -10,4 +10,7 @@ indexRouter.get('/search', indexController.getSearchedProducts);
 indexRouter.get('/add', indexController.getAddProducts);
 indexRouter.post('/add', indexController.postAddProducts);
 
+indexRouter.get('/update', indexController.getUpdateProducts);
+indexRouter.post('/update', indexController.postUpdateProducts);
+
 module.exports = indexRouter;
