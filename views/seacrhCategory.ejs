@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles.css">
+        <title><%= title %></title>
+    </head>
+    <body>
+        <%- include("partials/header.ejs") %>
+        <div class="main-container">
+            <h2> Search Category </h2>
+            <div class="form-container" style="flex: 8;">
+                <%- include ("partials/errors.ejs") %>
+                <form action="/categories/search" method="GET">
+                    <label for="categoryName">
+                        Category Name:
+                        <input type="text" name="categoryName" id="categoryName">
+                    </label>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="refs-container">
+            <a href="/categories/search">Search Category</a>
+            <a href="/categories/showProducts">Show Product By Category</a>
+            <a href="/categories/add">Add Category</a>
+            <a href="/categories/update">Update Category</a>
+            <a href="/categories/delete">Delete Category</a>
+        </div>
+    </body>
+</html>

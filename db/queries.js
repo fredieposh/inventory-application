@@ -63,4 +63,14 @@ exports.deleteProduct = async function(productName) {
     await pool.query(`
         DELETE FROM inventory WHERE product_name = ($1)
         `, [productName]);
-}
+};
+
+exports.getCategoryNames = async function() {
+    const { rows } = await pool.query(`SELECT category FROM categories;`);
+    return rows;
+};
+
+exports.getCategoryByName = async function(categoryName) {
+    const { rows } = await pool.query(`SELECT * FROM categories WHERE category = $1`, [categoryName]);
+    return rows;
+};

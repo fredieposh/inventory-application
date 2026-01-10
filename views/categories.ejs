@@ -10,25 +10,53 @@
         <%- include("partials/header.ejs") %>
         <div class="main-container">
             <h2> Categories </h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Category</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% rows.forEach(row => { %>
-                            <tr>
-                                <td><%= row.id %></td>
-                                <td><%= row.category %></td>
-                            </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
+            <% if (locals.isResults) { %>
+                <% if (isFound) { %>
+                    <h3><%= categoryName %> Inventory Entries:</h3>
+                                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% rows.forEach(row => { %>
+                                    <tr>
+                                        <td><%= row.id %></td>
+                                        <td><%= row.category %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <div class="not-found">
+                        <h3>No Entries Found</h3>
+                    </div>
+                <% } %>
+             <% } else { %>
+                <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% rows.forEach(row => { %>
+                                    <tr>
+                                        <td><%= row.id %></td>
+                                        <td><%= row.category %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
             </div>
-        </div>
         <div class="refs-container">
             <a href="/categories/search">Search Category</a>
             <a href="/categories/showProducts">Show Product By Category</a>
