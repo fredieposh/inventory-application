@@ -57,3 +57,10 @@ exports.addProduct = async function(productName, categoryName, price, quantity) 
     await pool.query(`INSERT INTO inventory (product_name, category, price, quantity)
         VALUES ($1, $2, $3, $4);`,[productName, categoryName, price, quantity]);
 };
+
+exports.deleteProduct = async function(productName) {
+    console.log(productName);
+    await pool.query(`
+        DELETE FROM inventory WHERE product_name = ($1)
+        `, [productName]);
+}

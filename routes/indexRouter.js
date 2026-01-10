@@ -13,4 +13,7 @@ indexRouter.post('/add', indexController.postAddProducts);
 indexRouter.get('/update', indexController.getUpdateProducts);
 indexRouter.post('/update', indexController.postUpdateProducts);
 
+indexRouter.get('/delete', indexController.getDeleteProducts);
+indexRouter.post('/delete', indexController.postDeleteProducts);
+
 module.exports = indexRouter;

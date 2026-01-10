@@ -42,6 +42,12 @@ const validateUpdateProduct = [
         .isNumeric({ min : 1}).withMessage(`Quantity ${productAddPriceZeroErr}`),
 ];
 
+const validateDeleteProduct = [
+    body("productName").trim()
+        .notEmpty().withMessage(`Product name ${productSearchEmptyErr}`)
+        .isLength({ min: 2, max: 50 }).withMessage(`Product name ${productSearchLengthErr}`),
+];
+
 exports.getAllEntries = async function(req, res) {
     // debugger;
     const rows = await dbHandler.getAllInventory()
@@ -180,6 +186,62 @@ exports.postUpdateProducts = [
             price: bodyParams.price,
             quantity: bodyParams.quantity,
         });
+
+        res.redirect('/');
+    },
+];
+
+
+exports.getDeleteProducts = async function(req, res) {
+    const productNames = await dbHandler.getAllproductNames();
+    res.render('deleteProduct', {
+        title: "Delete Product",
+        productNames,
+    });
+};
+
+exports.postDeleteProducts = [
+    validateDeleteProduct,
+    async function(req, res) {
+        const productNames = await dbHandler.getAllproductNames();
+        let errors = validationResult(req);
+
+        if(Object.keys(productNames).length === 0) {
+            res.render('deleteProduct', {
+                title: "Delete Product",
+                errors: errors.array(),
+                productNames,
+                isProducts: false,
+            });
+            return;              
+        };
+
+        if (!errors.isEmpty()){
+            res.render('deleteProduct',{
+                title: "Delete Product",
+                errors: errors.array(),
+                productNames,
+            });
+            return;
+        };
+
+        const bodyParams = matchedData(req);
+        const newErrors = [];
+
+        if (!productNames.includes(bodyParams['productName'])) {
+            newErrors.push({msg: "Product name wasn't found in inventory"});
+        };
+
+        if(newErrors.length > 0) {
+            res.render('deleteProduct',{
+                title: "Delete Product",
+                errors: newErrors,
+                productNames,
+            });
+            return;
+        };
+        // console.log(bodyParams.productName)
+        await dbHandler.deleteProduct(bodyParams.productName);
 
         res.redirect('/');
     },
