@@ -71,6 +71,12 @@ exports.getCategoryNames = async function() {
 };
 
 exports.getCategoryByName = async function(categoryName) {
-    const { rows } = await pool.query(`SELECT * FROM categories WHERE category = $1`, [categoryName]);
+    const { rows } = await pool.query(`SELECT * FROM categories WHERE category = $1;`, [categoryName]);
     return rows;
+};
+
+exports.addCategory = async function(categoryName) {
+    await pool.query(`
+        INSERT INTO categories (category)
+        VALUES ($1);`, [categoryName]);
 };

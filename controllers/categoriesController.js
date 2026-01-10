@@ -10,6 +10,12 @@ const validateCategory = [
         .isLength({ min: 2, max: 50 }).withMessage(`Category name ${categorySearchLengthErr}`),
 ];
 
+const validateCategoryPost = [
+    body('categoryName').trim()
+        .notEmpty().withMessage(`Category name ${categorySearchEmptyErr}`)
+        .isLength({ min: 2, max: 50 }).withMessage(`Category name ${categorySearchLengthErr}`),
+];
+
 exports.getAllCategories = async function(req, res) {
     const rows = await dbHandler.getAllCategories();
     res.render('categories',{
@@ -49,5 +55,41 @@ exports.getSearchCategory = [
             isFound,
             categoryName,
         });        
+    },
+];
+
+exports.getAddCategory = async function(req, res) {
+    res.render('addCategory', {
+        title: 'Add Category',
+    })
+};
+
+exports.postAddCategory = [
+    validateCategoryPost,
+    async function(req, res) {
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            res.status(400).render('addCategory', {
+                title: 'Add Category',
+                errors: errors.array(),
+            });
+
+            return;
+        };
+
+        const newErrors = [];
+        const { categoryName } = matchedData(req);
+        const rows = await dbHandler.getCategoryByName(categoryName);
+        if(Object.keys(rows) > 0) {
+            newErrors.push({msg: 'Category already exists'});
+            res.status(400).render('addCategory', {
+                title: 'addCategory',
+                errors: newErrors,
+            });
+        };
+
+        await dbHandler.addCategory(categoryName);
+
+        res.redirect('/categories');
     },
 ];
