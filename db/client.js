@@ -1,7 +1,7 @@
 const { Client } = require('pg');
 
 const client = new Client({
-    connectionString: "postgresql://maorgo92@localhost:5432/inventory_app",
+    connectionString: "postgresql://postgres:CSLhhhKPRXloUeTMRfSmemzKpmVVIWXU@caboose.proxy.rlwy.net:21344/railway",
 });
 
 const SQL = `

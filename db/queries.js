@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    connectionString: "postgresql://maorgo92@localhost:5432/inventory_app",
+    connectionString: "postgresql://postgres:CSLhhhKPRXloUeTMRfSmemzKpmVVIWXU@caboose.proxy.rlwy.net:21344/railway",
 });
 
 function getParamsForProductUpdateQuery(fieldsObj) {
