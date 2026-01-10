@@ -31,6 +31,11 @@ async function areProductInCategory(categoryName) {
         return { products, isFound };
 };
 
+async function getCategories(){
+    const rows = await dbHandler.getCategoryNames();
+    return rows.map(row => row['category']);
+};
+
 exports.getAllCategories = async function(req, res) {
     const rows = await dbHandler.getAllCategories();
     res.render('categories',{
@@ -168,8 +173,7 @@ exports.postProdByCat = [
 ];
 
 exports.getUpdateCategories = async function(req, res) {
-    const rows = await dbHandler.getCategoryNames();
-    const categories = rows.map(row => row['category']);
+    const categories = await getCategories();
     
     res.render('updateCategory', {
         title: "Update Category",
@@ -212,4 +216,65 @@ exports.postUpdateCategories = [
         
         res.redirect('/categories');
     },
-]
+];
+
+exports.getDeleteCategory = async function(req, res) {
+    const categories =  await getCategories();
+
+        res.render('seacrhCategory', {
+            title: 'Delete Category',
+            pageTitle: 'Delete Category',
+            path: '/categories/delete',
+            method: 'POST',
+            categories,
+            type: 'Delete'
+    });    
+};
+
+exports.postDeleteCategory = [
+    validateCategoryPost,
+    async function(req, res){
+        const categories =  await getCategories();
+        const errors = validationResult(req);
+
+        if  (!errors.isEmpty()){
+            res.render('seacrhCategory', {
+                title: 'Delete Category',
+                pageTitle: 'Delete Category',
+                path: '/categories/delete',
+                method: 'POST',
+                categories,
+                errors,
+                type: 'Delete',
+            });
+            return;
+        };
+
+        const newErrors = [];
+        const {categoryName} = matchedData(req);
+        const rows = await dbHandler.getCategoryByName(categoryName);
+
+        if(Object.keys(rows).length === 0) {
+            newErrors.push({ msg: "This category doen't exists", });
+            res.render('seacrhCategory', {
+                title: 'Delete Category',
+                pageTitle: 'Delete Category',
+                path: '/categories/delete',
+                method: 'POST',
+                categories,
+                errors: newErrors,
+                type: 'Delete',
+            });
+            return;        
+        };
+
+        await dbHandler.deleteCategory(categoryName);
+
+        const { products, isFound } = await areProductInCategory(categoryName);
+        if (isFound) {
+            await dbHandler.deleteCategoryProducts(categoryName);
+        };
+
+        res.redirect('/categories');
+    },
+];

@@ -101,3 +101,11 @@ exports.updateProductsCategory = async function(oldCategoryName, newCategoryName
         `, [newCategoryName, oldCategoryName]
     );
 };
+
+exports.deleteCategory = async function(categoryName) {
+    await pool.query('DELETE FROM categories WHERE category = $1', [categoryName]);
+};
+
+exports.deleteCategoryProducts = async function(categoryName) {
+    await pool.query('DELETE FROM inventory WHERE category = $1', [categoryName]);
+};

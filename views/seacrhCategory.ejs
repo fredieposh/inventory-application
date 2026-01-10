@@ -15,9 +15,20 @@
                 <form action="<%= path %>" method="<%= method %>">
                     <label for="categoryName">
                         Category Name:
-                        <input type="text" name="categoryName" id="categoryName">
+                        <input type="text" name="categoryName" id="categoryName" list="categoryList">
+                        <datalist id = 'categoryList'>
+                        <% if (locals.categories) { %>
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category %>">
+                            <% }) %>
+                        <% } %>
+                        </datalist>
                     </label>
-                    <button type="submit">Search</button>
+                    <% if (locals.type) { %>
+                        <button type="submit">Delete</button>
+                    <% } else { %>
+                        <button type="submit">Search</button>
+                    <% } %> 
                 </form>
             </div>
         </div>
