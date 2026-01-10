@@ -80,3 +80,8 @@ exports.addCategory = async function(categoryName) {
         INSERT INTO categories (category)
         VALUES ($1);`, [categoryName]);
 };
+
+exports.getProductsByCategory = async function(categoryName){
+    const { rows } = await pool.query(`SELECT * FROM inventory WHERE category = $1`, [categoryName]);
+    return rows;
+};

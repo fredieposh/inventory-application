@@ -10,4 +10,7 @@ categoryRouter.get('/search', categoriesController.getSearchCategory);
 categoryRouter.get('/add', categoriesController.getAddCategory);
 categoryRouter.post('/add', categoriesController.postAddCategory);
 
+categoryRouter.get('/showProducts', categoriesController.getProdByCat);
+categoryRouter.post('/showProducts', categoriesController.postProdByCat);
+
 module.exports = categoryRouter;
