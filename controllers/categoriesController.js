@@ -16,6 +16,21 @@ const validateCategoryPost = [
         .isLength({ min: 2, max: 50 }).withMessage(`Category name ${categorySearchLengthErr}`),
 ];
 
+const validateUpdateCategory = [
+    body('categoryName').trim()
+        .notEmpty().withMessage(`Category name ${categorySearchEmptyErr}`)
+        .isLength({ min: 2, max: 50 }).withMessage(`Category name ${categorySearchLengthErr}`),
+    body('newCategoryName').trim()
+        .notEmpty().withMessage(`Category name ${categorySearchEmptyErr}`)
+        .isLength({ min: 2, max: 50 }).withMessage(`Category name ${categorySearchLengthErr}`),
+];
+
+async function areProductInCategory(categoryName) {
+        const products = await dbHandler.getProductsByCategory(categoryName);
+        const isFound =  Object.keys(products).length > 0 ? true : false;
+        return { products, isFound };
+};
+
 exports.getAllCategories = async function(req, res) {
     const rows = await dbHandler.getAllCategories();
     res.render('categories',{
@@ -140,9 +155,8 @@ exports.postProdByCat = [
         return;        
     };
 
-    const products = await dbHandler.getProductsByCategory(categoryName);
-    console.log(products);
-    const isFound = Object.keys(products).length > 0 ? true : false;
+    const { products, isFound } = await areProductInCategory(categoryName);
+    console.log(products, isFound);
     res.render('index',{
             title: 'Product Search Results',
             rows: products,
@@ -152,3 +166,50 @@ exports.postProdByCat = [
     });
   }, 
 ];
+
+exports.getUpdateCategories = async function(req, res) {
+    const rows = await dbHandler.getCategoryNames();
+    const categories = rows.map(row => row['category']);
+    
+    res.render('updateCategory', {
+        title: "Update Category",
+        categories,
+    });
+};
+
+exports.postUpdateCategories = [
+    validateUpdateCategory,
+    async function(req, res) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('updateCategory', {
+                title: "Update Category",
+                categories,
+                errors,
+            });   
+            return; 
+        };
+        const newErrors = [];
+        const {categoryName, newCategoryName} = matchedData(req);
+        const rows = await dbHandler.getCategoryByName(categoryName);
+
+        if(Object.keys(rows).length === 0) {
+            newErrors.push({ msg: "This category doen't exists", });
+            res.render('updateCategory', {
+                title: "Update Category",
+                categories,
+                errors: newErrors,
+            });
+            return;        
+        };
+
+        await dbHandler.updateCategoryName(categoryName, newCategoryName);
+
+        const { products, isFound } = await areProductInCategory(categoryName);
+        if (isFound) {
+            await dbHandler.updateProductsCategory(categoryName, newCategoryName);
+        };
+        
+        res.redirect('/categories');
+    },
+]

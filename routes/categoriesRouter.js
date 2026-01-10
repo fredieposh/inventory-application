@@ -13,4 +13,7 @@ categoryRouter.post('/add', categoriesController.postAddCategory);
 categoryRouter.get('/showProducts', categoriesController.getProdByCat);
 categoryRouter.post('/showProducts', categoriesController.postProdByCat);
 
+categoryRouter.get('/update', categoriesController.getUpdateCategories);
+categoryRouter.post('/update', categoriesController.postUpdateCategories);
+
 module.exports = categoryRouter;

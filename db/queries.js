@@ -42,14 +42,12 @@ exports.getProductInfo = async function (productName) {
 };
 
 exports.getAllCategories = async function() {
-    const { rows } = await pool.query('SELECT * FROM categories;');
+    const { rows } = await pool.query('SELECT * FROM categories ORDER BY id;');
     return rows;
 };
 
 exports.isProductExists = async function(productName, categoryName) {
     const { rows } = await pool.query('SELECT * FROM inventory WHERE product_name = ($1) AND category = ($2);',[productName, categoryName]);
-    console.log(rows);
-    console.log(rows.length);
     return (rows.length > 0);
 };
 
@@ -84,4 +82,22 @@ exports.addCategory = async function(categoryName) {
 exports.getProductsByCategory = async function(categoryName){
     const { rows } = await pool.query(`SELECT * FROM inventory WHERE category = $1`, [categoryName]);
     return rows;
+};
+
+exports.updateCategoryName = async function(oldCategoryName, newCategoryName) {
+    await pool.query(`
+        UPDATE categories
+        SET category = $1
+        WHERE category = $2;
+        `, [newCategoryName, oldCategoryName]
+    );
+};
+
+exports.updateProductsCategory = async function(oldCategoryName, newCategoryName) {
+        await pool.query(`
+        UPDATE inventory
+        SET category = $1
+        WHERE category = $2;
+        `, [newCategoryName, oldCategoryName]
+    );
 };
